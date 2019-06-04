@@ -1,0 +1,156 @@
+type diri enum
+	UP
+	DOWN
+	RIGHT
+	LEFT
+
+type cord struct
+	x int
+	y int
+
+
+const xBlocks = 8
+const yBlocks = 8
+
+
+--prelude--
+
+alive := on
+dir := diri.RIGHT
+dirBuf := diri.RIGHT
+
+snake := [] // sugar for our vector, with type inference
+	initLen := 3
+	for i in 1 ~> initLen
+		snake.push(cord{x: initLen + 1 - i, y: 1})
+
+whitePill :: cord // set at zero value of type
+-setWhitePill-
+
+-draw-
+--
+
+--arrowUp!--
+if dir != diri.DOWN
+	dirBuf < diri.UP
+--
+
+--arrowDown!--
+if dir != diri.UP
+	dirBuf < diri.DOWN
+--
+
+--arrowRight!--
+if dir != diri.LEFT
+	dirBuf < diri.RIGHT
+--
+
+--arrowLeft!--
+if dir != diri.RIGHT
+	dirBuf < diri.LEFT
+--
+
+
+--setWhitePill--
+loop
+	xrand := ~rngi(xBlocks)
+	yrand := ~rngi(yBlocks)
+
+	c := coord{x: xrand, y: yrand}
+
+	if snake.contains(c)
+		continue
+	
+	whitePill < c
+	break
+--
+
+
+--checkIntersect--
+for i in 1 ~> snake.len()
+	for j in i+1 ~> snake.len()
+		if snake[i] == snake[j]
+			yes < on
+--
+
+
+--blink!--
+
+dir < dirBuf
+
+	next := snake[1]
+	switch dir
+	case UP:
+		next.y < (next.y + 1) 1% yBlocks
+	case DOWN:
+		next.y < (next.y - 1) 1% yBlocks
+	case RIGHT:
+		next.x < (next.x + 1) 1% xBlocks
+	case LEFT:
+		next.x < (next.x - 1) 1% xBlocks
+
+	snake.prepend(next)
+
+if snake[1] == whitePill
+	-setWhitePill-
+else
+	snake.trimLast()
+fi
+
+	yes := off
+	-checkIntersect-
+	if yes
+		alive < off
+
+-draw-
+--
+
+
+--draw--
+
+for i in 1 ~> xBlocks
+	for j in 1 ~> yBlocks
+		~black_square(i, j)
+
+for c in snake
+	~green_sqaure(c.x, c.y)
+
+~white_square(whitePill.x, whitePill.y)
+
+--
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

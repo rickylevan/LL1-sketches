@@ -1,0 +1,79 @@
+type vector<T> struct
+	ptr *T   priv
+	len int  priv
+	cap int  priv
+
+(v: vector<T>) free()
+	free v.ptr
+
+(v: vector<T>) len() -> int
+	ret len
+
+(v: vector<T>) push(a: T)
+	if v.len == 0 && v.cap == 0
+		v.ptr << land 8 T // magic 8 hardwired
+		v.ptr[1] <_< a
+		v.len < 1
+		v.cap < 8
+	else if v.len < v.cap
+		v.len++
+		v.ptr[v.len] <_< a
+	else
+		v.cap *= 2
+		next :=< land v.cap T
+		for i in 1 ~> v.len
+			next[i] <_< v.ptr[i]
+		free v.ptr
+		v.ptr << next // this invalidates next
+		v.len++
+		v.ptr[v.len] <_< a
+
+(v: vector<T>) prepend(a: T)
+	if v.len == 0 && v.cap == 0
+		v.push(a)
+	else if v.len < v.cap
+		for i in 1 ~> v.len
+			v.ptr[v.len+2-i] <_< v.ptr[v.len+1-i]
+		v.ptr[1] <_< a
+		v.len++
+	else
+		v.cap *= 2
+		next :=< land v.cap T
+		next[1] <_< a
+		for i in 1 ~> v.len
+			next[i+1] <_< v.ptr[i]
+		free v.ptr
+		v.ptr << next
+		v.len++
+
+(v: vector<T>) trimLast()
+	v.len--
+
+// a method only accessible if equality on T defined
+T :: equality
+(v: vector<T>) contains(a: T) -> bool {
+	match := off
+	for i in 1 ~> v.len
+		// just going to use the vector access sugar
+		if v[i] == a
+			match < on
+	ret match
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
