@@ -4,6 +4,10 @@ type vector<T> struct
 	cap int  priv
 
 (v: vector<T>) free()
+	## T: free ## // only include this code if T defines free
+	for i in 1 ~> v.cap
+		v[i].free()
+	##
 	free v.ptr
 
 (v: vector<T>) len() -> int
