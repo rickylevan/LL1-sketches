@@ -51,14 +51,13 @@ type vector<T> struct
 
 // a method only accessible if equality on T defined
 T :: equality
-(v: vector<T>) contains(a: T) -> bool {
+(v: vector<T>) contains(a: T) -> bool
 	match := off
 	for i in 1 ~> v.len
 		// just going to use the vector access sugar
 		if v[i] == a
 			match < on
 	ret match
-}
 
 
 
