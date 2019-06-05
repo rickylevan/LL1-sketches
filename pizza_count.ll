@@ -11,7 +11,7 @@ if err != nil
 // be generic nil. Billion dollar mistake my ass. Rust-style
 // option wrappers are their own pain, too
 
-lines := s..splitOn('\n\')
+lines := s..splitOn('\n')
 
 count := 0
 for line in lines
