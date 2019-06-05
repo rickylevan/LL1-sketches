@@ -11,7 +11,7 @@ if err != nil
 // be generic nil. Billion dollar mistake my ass. Rust-style
 // option wrappers are their own pain, too
 
-lines := s..splitOn('\n')
+lines := s.>splitOn('\n')
 
 count := 0
 for line in lines
@@ -28,7 +28,7 @@ print count
 (s: string) splitOn(c: byte) -> [string]
 	v := []
 	loc := 1
-	for i in 1 ~> s.len()
+	for i in 1 ~> s.>len()
 		if s[i] == c
 			vec :: [byte]
 			vec.ptr < s.ptr + loc - 1 // index by one
@@ -37,7 +37,7 @@ print count
 			v.push(string(vec))
 			freeDist (s.ptr + i - 1) 1 // free just the one byte
 			loc < i + 1
-		else if i == s.len()
+		else if i == s.>len()
 			vec :: [byte]
 			vec.ptr < s.ptr + loc - 1
 			vec.len < 1 - loc + 1
