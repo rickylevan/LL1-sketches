@@ -42,26 +42,10 @@ type ball
 	color color
 
 
---update--
-if on
-	-move-straight-
-if curve-behavior
-	-curve-
-if color-shift-behavior
-	-color-shift-
-if collide-behavior
-	-collide-wrap-
---
 
-
---collide-wrap--
-for bb in balls
-	if bb !== b // identity, not equality. lol
-		-collide-
---
 
 --get-distance--
-dist,, distance(b, bb)
+dist:,, distance(b, bb)
 --
 
 --get-reduced-mass--
@@ -152,6 +136,8 @@ nudge = 1.1
 	b.pos < b-new-pos
 	bb.pos < bb-new-pos
 
+--
+
 
 
 --move-straight--
@@ -203,30 +189,31 @@ if time-counter == 0
 
 --prelude--
 
-time-flowing? <: on
-const time-period <: 3 // for cycling color shifts
-time-counter <: 0
+time-flowing? := on
+const time-period := 3 // for cycling color shifts
+time-counter := 0
 
-const default-radius = 30
+default-radius := 30
 
-curve-behavior <: off
-color-shift-behavior <: off
-collide-behavior <: off
+curve-behavior := off
+color-shift-behavior := off
+collide-behavior := off
 
 // define initial balls
 
-	ball1 <: ball {
-		pos: point {
-			x: 80, y: 80
-		}
-		vel: point {
-			x: 8.0, y: 3.7
-		}
-		rad: default-radius
-		color: color {
-			r: 255, g: 0, b: 0
-		}
-	}
+	ball1 := ||ball||
+	ball1.pos = ||point||
+	ball1.pos.x = 80
+	ball1.pos.y = 80
+	ball1.vel = ||point||
+	ball1.vel.x = 8.0
+	ball1.vel.y = 3.7
+	ball1.rad = default-radius
+	ball1.color = ||color||
+	ball1.color.r = 255
+	ball1.color.g = 0
+	ball1.color.b = 0		
+	
 
 	ball2 <: ball {
 		pos: point {
@@ -262,15 +249,49 @@ collide-behavior <: off
 --
 
 
+type point
+	x float
+	y float
+
+type color
+	r byte
+	g byte
+	b byte
+
+type ball
+	pos   point
+	vel   point
+	rad   float
+	color color
+
+
 --blink!--
 if time-flowing?
 	for b in balls
 		-update-
 
-	time-counter < (time-counter + 1) % time-period
-
 	-draw-model-
 --
+
+--update--
+if on
+	-move-straight-
+if curve-behavior
+	-curve-
+if color-shift-behavior
+	-color-shift-
+if collide-behavior
+	-collide-wrap-
+--
+
+
+--collide-wrap--
+for bb in balls
+	if bb !== b // identity, not equality. lol
+		-collide-
+--
+
+
 
 
 
@@ -318,13 +339,5 @@ color-shift-behavior!!
 --collide-button-click!-
 collide-behavior!!
 --
-
-
-
-
-
-
-
-
 
 
